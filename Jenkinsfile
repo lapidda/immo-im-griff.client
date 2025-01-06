@@ -7,13 +7,16 @@ pipeline {
                 sh 'npm install'
             }
         }
+        stage('Test'){
+          steps{
+            sh 'npm lint'
+            sh 'npm run test --watch=false'
+          }
+        }
         stage('Deliver') {
             steps {
-                sh 'chmod -R +rwx ./jenkins/scripts/deliver.sh'
-                sh 'chmod -R +rwx ./jenkins/scripts/kill.sh'
-                sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                sh './jenkins/scripts/kill.sh'
+                sh 'ng build --configuration production'
+                sh 'cp -a dist/immoclient/. /var/www/angular'
             }
         }
     }
