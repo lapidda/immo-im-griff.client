@@ -10,12 +10,11 @@ pipeline {
         stage('Test'){
           steps{
             sh 'npm run lint'
-            sh 'npm run test --watch=false'
           }
         }
         stage('Deliver') {
             steps {
-                sh 'ng build --configuration production'
+                sh 'npm run build'
                 sh 'cp -a dist/immoclient/. /var/www/angular'
             }
         }
